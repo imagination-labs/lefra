@@ -28,6 +28,33 @@ describe('EntityLedgerAccount', () => {
     expect(account.name).toEqual('USER_RECEIVABLES_LOCKED');
   });
 
+  test('create entity account with string external id', () => {
+    const externalId = randomString();
+    const account = new EntityAccountRef(
+      ledgerSlug,
+      'USER_RECEIVABLES',
+      externalId,
+    );
+
+    expect(account.externalId).toEqual(externalId);
+    expect(account.accountSlug).toEqual(`USER_RECEIVABLES:${externalId}`);
+  });
+
+  test.each([
+    ['empty string', '   '],
+    ['contains whitespace', 'user id'],
+    ['contains colon', 'id:1'],
+  ])(
+    'cannot create entity account with invalid external id when %s',
+    (_description, externalId) => {
+      expect(
+        () => new EntityAccountRef(ledgerSlug, 'USER_RECEIVABLES', externalId),
+      ).toThrow(
+        'External id must be a finite number or non-empty string without spaces or ":"',
+      );
+    },
+  );
+
   test('cannot create entity account with empty name', () => {
     expect(() => new EntityAccountRef(ledgerSlug, '', 1)).toThrow(
       'Account name cannot be empty',
