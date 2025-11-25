@@ -13,6 +13,7 @@ export { type ILedgerOperation } from '@/ledger/operation/LedgerOperation.js';
 export { TransactionFlowRenderer } from '@/ledger/renderer/TransactionFlowRenderer.js';
 export { type LedgerStorage } from '@/ledger/storage/LedgerStorage.js';
 export { PostgresLedgerStorage } from '@/ledger/storage/postgres/PostgresLedgerStorage.js';
+export { TypeormLedgerStorage } from '@/ledger/storage/typeorm/TypeormLedgerStorage.js';
 export { doubleEntry } from '@/ledger/transaction/DoubleEntry.js';
 export { credit, debit } from '@/ledger/transaction/Entry.js';
 export { Transaction } from '@/ledger/transaction/Transaction.js';
