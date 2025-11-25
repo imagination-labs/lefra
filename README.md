@@ -101,6 +101,27 @@ Let's create storage for our ledger.
 const storage = new PostgresLedgerStorage(process.env.LFR_DATABASE_URL!);
 ```
 
+If you already manage connections and transactions with TypeORM, you can pass
+your `QueryRunner` or `EntityManager` instead so Lefra participates in the same
+transaction scope:
+
+```typescript
+const runner = dataSource.createQueryRunner();
+await runner.startTransaction();
+
+// manageTransaction: false means Lefra does not start/commit/rollback.
+const storage = new TypeormLedgerStorage(runner, { manageTransaction: false });
+
+// ... do your work
+await storage.insertTransaction(tx);
+
+await runner.commitTransaction();
+await runner.release();
+```
+
+If you prefer Lefra to start/commit/rollback around each call, pass
+`manageTransaction: true` when constructing `TypeormLedgerStorage`.
+
 ##### Currency 
 
 Every ledger operates with a specific currency, which can be fiat money, cryptocurrencies, or bonus points.
