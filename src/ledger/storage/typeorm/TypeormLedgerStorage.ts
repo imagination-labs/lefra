@@ -98,9 +98,10 @@ const isUniqueViolation = (error: unknown, constraint?: string): boolean => {
 
 export type TypeormLedgerStorageOptions = {
   /**
-   * When true, the storage will start/commit/rollback its own transaction.
-   * When false (default), it assumes the caller manages transactions on the
-   * provided QueryRunner/EntityManager.
+   * When true (default), the storage will start/commit/rollback its own
+   * transaction unless a transaction is already active on the runner.
+   * When false, it assumes the caller manages transactions on the provided
+   * QueryRunner/EntityManager.
    */
   manageTransaction?: boolean;
 };
@@ -121,7 +122,7 @@ export class TypeormLedgerStorage implements LedgerStorage {
     runnerOrManager: QueryRunnerLike | EntityManagerLike,
     options: TypeormLedgerStorageOptions = {},
   ) {
-    this.manageTransaction = options.manageTransaction ?? false;
+    this.manageTransaction = options.manageTransaction ?? true;
 
     if (isEntityManagerLike(runnerOrManager)) {
       this.manager = runnerOrManager;

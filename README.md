@@ -109,8 +109,9 @@ transaction scope:
 const runner = dataSource.createQueryRunner();
 await runner.startTransaction();
 
-// manageTransaction: false means Lefra does not start/commit/rollback.
-const storage = new TypeormLedgerStorage(runner, { manageTransaction: false });
+// manageTransaction defaults to true; Lefra will start/commit/rollback unless
+// a transaction is already active on the runner.
+const storage = new TypeormLedgerStorage(runner);
 
 // ... do your work
 await storage.insertTransaction(tx);
@@ -119,8 +120,8 @@ await runner.commitTransaction();
 await runner.release();
 ```
 
-If you prefer Lefra to start/commit/rollback around each call, pass
-`manageTransaction: true` when constructing `TypeormLedgerStorage`.
+If you want Lefra to fully defer transaction control to the caller, pass
+`manageTransaction: false` when constructing `TypeormLedgerStorage`.
 
 ##### Currency 
 
