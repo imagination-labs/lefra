@@ -3,10 +3,8 @@ import { LedgerAccountError } from '@/errors.js';
 type LedgerAccountRefType = 'SYSTEM' | 'ENTITY';
 export const ACCOUNT_NAME_SEPARATOR = '_';
 
-const VALID_NAME_REGEX = new RegExp(
-  `^[A-Z][A-Z${ACCOUNT_NAME_SEPARATOR}]*[A-Z]$`,
-  'u',
-);
+// Allow letters, digits, and underscores; must start/end with a letter or digit.
+const VALID_NAME_REGEX = /^[\p{L}\d]\w*[\p{L}\d]$/u;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type LedgerAccountRefBuilder = (...args: any) => LedgerAccountRef;
@@ -31,7 +29,7 @@ export abstract class LedgerAccountRef {
 
     if (!VALID_NAME_REGEX.test(name)) {
       throw new LedgerAccountError(
-        `Account name can only contain uppercase letters without special characters. Name: ${name} is invalid`,
+        `Account name is invalid. Use letters, digits, or underscores, and start/end with a letter or digit. Name: ${name}`,
       );
     }
   }
