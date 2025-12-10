@@ -692,7 +692,7 @@ export class TypeormLedgerStorage implements LedgerStorage {
     );
 
     return {
-      description: description ?? null,
+      description: description ?? '',
       id: toDatabaseId(id),
       isEntityLedgerAccount: pickField<boolean>(
         row,
