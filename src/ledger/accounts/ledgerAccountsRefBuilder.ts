@@ -1,11 +1,14 @@
 import { LedgerNotFoundError } from '@/errors.js';
 import { EntityAccountRef } from '@/ledger/accounts/EntityAccountRef.js';
 import { SystemAccountRef } from '@/ledger/accounts/SystemAccountRef.js';
-import { DB_ID, LedgerSpecification } from '@/types.js';
+import { EntityExternalId, LedgerSpecification } from '@/types.js';
 
 type AccountsRefBuilder<S extends LedgerSpecification> = {
   (slug: S['systemAccounts'][number]): SystemAccountRef;
-  (slug: S['entityAccountTypes'][number], externalId: DB_ID): EntityAccountRef;
+  (
+    slug: S['entityAccountTypes'][number],
+    externalId: EntityExternalId,
+  ): EntityAccountRef;
 };
 
 export const ledgerAccountsRefBuilder = <S extends LedgerSpecification>(
@@ -19,7 +22,7 @@ export const ledgerAccountsRefBuilder = <S extends LedgerSpecification>(
 
   return ((
     slug: S['systemAccounts'][number] | S['entityAccountTypes'][number],
-    externalId?: DB_ID,
+    externalId?: EntityExternalId,
   ) => {
     if (externalId !== undefined) {
       if (!entityAccountTypes.includes(slug)) {

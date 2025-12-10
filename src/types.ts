@@ -7,6 +7,12 @@ export type NonEmptyArray<T> = [T, ...T[]];
 
 export type DB_ID = number; // for now support only integer ids but in the future we might want to support string ids as well
 
+/**
+ * Identifier for dynamic entity-specific accounts (e.g., user/customer IDs).
+ * Accepts either numeric or string inputs that can be embedded in account slugs.
+ */
+export type EntityExternalId = string | number;
+
 export type NormalBalance = 'DEBIT' | 'CREDIT';
 
 export type InputLedgerAccount = {
@@ -68,9 +74,10 @@ export type LedgerSpecification = {
 };
 
 export type ArrayType<T> = T extends Array<infer U> ? U : T;
-type ExtractUnitFromEntry<T> = T extends DebitEntry<infer C>
-  ? C
-  : T extends CreditEntry<infer C>
+type ExtractUnitFromEntry<T> =
+  T extends DebitEntry<infer C>
     ? C
-    : never;
+    : T extends CreditEntry<infer C>
+      ? C
+      : never;
 export type ExtractUnitCode<T> = ExtractUnitFromEntry<ArrayType<T>>;

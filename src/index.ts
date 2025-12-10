@@ -21,6 +21,7 @@ export { TransactionDoubleEntries } from '@/ledger/transaction/TransactionDouble
 export { Unit } from '@/ledger/units/Unit.js';
 export {
   type DB_ID,
+  type EntityExternalId,
   type EntryInput,
   type InputLedgerAccount,
   type InputLedgerAccountType,
