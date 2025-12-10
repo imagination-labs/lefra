@@ -31,7 +31,7 @@ describe('SystemLedgerAccount', () => {
     ['-NAME'],
   ])('cannot create entity account with invalid name %s', (name) => {
     expect(() => new SystemAccountRef(ledgerSlug, name)).toThrow(
-      'Account name is invalid. Use letters, digits, underscores, or hyphens, and start/end with a letter or digit.',
+      'Account name is invalid. Use uppercase letters, digits, underscores, or hyphens, and start/end with a letter or digit.',
     );
   });
 });
