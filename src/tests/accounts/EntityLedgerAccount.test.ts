@@ -40,6 +40,16 @@ describe('EntityLedgerAccount', () => {
     expect(account.accountSlug).toEqual(`USER_RECEIVABLES:${externalId}`);
   });
 
+  test('create entity account with hyphenated name', () => {
+    const account = new EntityAccountRef(
+      ledgerSlug,
+      'USER-RECEIVABLES',
+      randomInt(),
+    );
+
+    expect(account.accountSlug.startsWith('USER-RECEIVABLES:')).toBe(true);
+  });
+
   test.each([
     ['empty string', '   '],
     ['contains whitespace', 'user id'],
@@ -67,9 +77,11 @@ describe('EntityLedgerAccount', () => {
     ['special_Chars'],
     ['QWE_RTY_'],
     ['{}'],
+    ['NAME-'],
+    ['-NAME'],
   ])('cannot create entity account with invalid name %s', (name) => {
     expect(() => new EntityAccountRef(ledgerSlug, name, 1)).toThrow(
-      'Account name can only contain uppercase letters without special characters',
+      'Account name is invalid. Use letters, digits, underscores, or hyphens, and start/end with a letter or digit.',
     );
   });
 });

@@ -10,6 +10,11 @@ describe('SystemLedgerAccount', () => {
     expect(account.accountSlug).toEqual('SYSTEM_CURRENT_ASSETS');
   });
 
+  test('create system account with hyphenated name', () => {
+    const account = new SystemAccountRef(ledgerSlug, 'SYSTEM-CURRENT-ASSETS');
+    expect(account.accountSlug).toEqual('SYSTEM-CURRENT-ASSETS');
+  });
+
   test('cannot create entity account with empty name', () => {
     expect(() => new SystemAccountRef(ledgerSlug, '')).toThrow(
       'Account name cannot be empty',
@@ -22,9 +27,11 @@ describe('SystemLedgerAccount', () => {
     ['special_Chars'],
     ['QWE_RTY_'],
     ['{}'],
+    ['NAME-'],
+    ['-NAME'],
   ])('cannot create entity account with invalid name %s', (name) => {
     expect(() => new SystemAccountRef(ledgerSlug, name)).toThrow(
-      'Account name can only contain uppercase letters without special characters',
+      'Account name is invalid. Use letters, digits, underscores, or hyphens, and start/end with a letter or digit.',
     );
   });
 });
